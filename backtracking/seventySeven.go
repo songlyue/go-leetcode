@@ -24,17 +24,14 @@ func combine(n int, k int) [][]int {
 	return res
 }
 
-func dfs(n int, k int, start int) {
+func dfs(n, k, startIndex int) {
 	if len(path) == k { // 说明已经满足了k个数的要求
-		tmp := make([]int, k)
+		tmp := make([]int, k) // 避免闭包问题
 		copy(tmp, path)
 		res = append(res, tmp)
 		return
 	}
-	for i := start; i <= n; i++ { // 从start开始，不往回走，避免出现重复组合
-		if n-i+1 < k-len(path) { // 剪枝
-			break
-		}
+	for i := startIndex; i <= n-(k-len(path))+1; i++ {
 		path = append(path, i)
 		dfs(n, k, i+1)
 		path = path[:len(path)-1]
